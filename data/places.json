@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Agumbe",
+    "slug": "agumbe",
+    "caption": "Where the monsoon writes its own story",
+    "description": "Rain doesn’t visit Agumbe. It stays. A forest soaked in stillness and sunburnt trails.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Sakleshpur",
+    "slug": "sakleshpur",
+    "caption": "Rails, rain, and the smell of raw coffee",
+    "description": "Abandoned tracks, rolling green hills, and monsoon memories brewed into every path.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Madikeri",
+    "slug": "madikeri",
+    "caption": "Where time brews like fresh filter coffee",
+    "description": "Kodava stories, earthy cottages, and mornings that taste like nostalgia.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Ooty",
+    "slug": "ooty",
+    "caption": "Colonial calm wrapped in eucalyptus wind",
+    "description": "Old-world charm, fog-tipped trees, and trails that turn into thoughts.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Wayanad",
+    "slug": "wayanad",
+    "caption": "Kerala’s forest heart, always listening",
+    "description": "Hanging bridges, tribal trails, and trees that remember your name.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Chikkamagalur",
+    "slug": "chikkamagalur",
+    "caption": "Where mornings walk through mist",
+    "description": "Coffee blossoms, soft hill curves, and conversations that happen without words.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Udupi",
+    "slug": "udupi",
+    "caption": "Coastal divinity and temple bells",
+    "description": "Sea breeze, sacred rituals, and prasad that tastes like home.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Gokarna",
+    "slug": "gokarna",
+    "caption": "Beach trails for quiet souls",
+    "description": "Sunsets that wait for you, and beaches that don’t need crowds to feel full.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+  }
+]

@@ -1,0 +1,46 @@
+[
+    {
+      "title": "Barkana Falls: Where Rain Whispers Loudest",
+      "slug": "barkana-falls",
+      "summary": "The second-highest waterfall in India hides in Agumbe’s fog.",
+      "place": "Agumbe",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "title": "Green Rails of Sakleshpur",
+      "slug": "sakleshpur-train-trail",
+      "summary": "An abandoned railway track that breathes with moss.",
+      "place": "Sakleshpur",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "title": "Coorg’s Coffee Fog",
+      "slug": "coorg-coffee-fog",
+      "summary": "Where beans dry under clouds and grandparents wait with filter coffee.",
+      "place": "Madikeri",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "title": "Ooty’s Silent Valley",
+      "slug": "ooty-silent-valley",
+      "summary": "A meadow that hushes even the wind.",
+      "place": "Ooty",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "title": "Wayanad’s Hanging Bridge",
+      "slug": "wayanad-hanging-bridge",
+      "summary": "A rickety passage across water and memory.",
+      "place": "Wayanad",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "title": "Chikkamagalur: Mist and Monsoon",
+      "slug": "chikkamagalur-monsoon-mist",
+      "summary": "Where every trail smells like the earth’s first breath.",
+      "place": "Chikkamagalur",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+    }
+   
+  ]
+  

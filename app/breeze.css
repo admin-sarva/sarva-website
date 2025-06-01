@@ -1,0 +1,47 @@
+@keyframes gustWave {
+    0% {
+      transform: translateX(-100%) translateY(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateX(50%) translateY(-10%);
+      opacity: 0.5;
+    }
+    90% {
+      opacity: 0.2;
+    }
+    100% {
+      transform: translateX(100%) translateY(0);
+      opacity: 0;
+    }
+  }
+  
+  .breeze-gust {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    z-index: 50;
+  
+    /* 🎨 Stronger color */
+    background: linear-gradient(
+  120deg,
+  transparent,
+  rgba(64, 224, 208, 0.15),
+  rgba(64, 224, 208, 0.5),
+  rgba(64, 224, 208, 0.15),
+  transparent
+);
+  
+    /* 💨 Thicker, blurrier gusts */
+    filter: blur(40px) drop-shadow(0 0 60px rgba(64, 224, 208, 0.25));
+  
+    opacity: 0;
+  }
+  
+  

@@ -1,0 +1,158 @@
+[
+  {
+    "name": "The Misty Canopy",
+    "slug": "the-misty-canopy",
+    "subtitle": "A treetop retreat kissed by the clouds",
+    "description": [
+      "The Misty Canopy is a romantic treehouse perched amidst the Agumbe rainforest.",
+      "Perfect for writers and couples looking for quietude and whispers of the wild.",
+      "Your mornings start with birdsong and end with starlit skies."
+    ],
+    "place": "Agumbe",
+    "highlighted": true,
+    "type": "Treehouse",
+    "tags": ["Forest-facing", "Romantic", "Solo"],
+    "pricePerNight": 3200,
+    "rating": 4.7,
+    "bestFor": ["Couples", "Writers"],
+    "videoUrl": "/videos/the-misty-canopy.mp4",
+    "heroImage": "/images/stays/the-misty-canopy/hero.jpg",
+    "images": [
+      "/images/stays/the-misty-canopy/1.jpg",
+      "/images/stays/the-misty-canopy/2.jpg",
+      "/images/stays/the-misty-canopy/3.jpg"
+    ],
+    "amenities": ["Wi-Fi", "Balcony", "Organic Meals", "Bonfire Pit"],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=..."
+  },
+  {
+    "name": "Valley Echo Homestay",
+    "slug": "valley-echo-homestay",
+    "subtitle": "Where the hills sing and the rain hums",
+    "description": [
+      "Hidden in Sakleshpur’s green folds, Valley Echo is ideal for nature-loving families.",
+      "Railway bridge hikes and monsoon clouds form part of your everyday routine.",
+      "Sip hot coffee while the mist wraps the valley in silence."
+    ],
+    "place": "Sakleshpur",
+    "highlighted": true,
+    "type": "Homestay",
+    "tags": ["Rainy", "Family", "Hiking"],
+    "pricePerNight": 2800,
+    "rating": 4.3,
+    "bestFor": ["Families", "Nature Lovers"],
+    "videoUrl": null,
+    "heroImage": "/images/stays/valley-echo-homestay/hero.jpg",
+    "images": [
+      "/images/stays/valley-echo-homestay/1.jpg",
+      "/images/stays/valley-echo-homestay/2.jpg",
+      "/images/stays/valley-echo-homestay/3.jpg"
+    ],
+    "amenities": ["Trekking Guide", "Homely Food", "River View"],
+"mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.839990738501!2d77.59285757468961!3d12.976347215144874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1673e25a9f6d%3A0x9e9296ae72f8a7ae!2sCubbon%20Park!5e0!3m2!1sen!2sin!4v1717151034224!5m2!1sen!2sin"
+  },
+  {
+    "name": "Coorg Mudhouse Retreat",
+    "slug": "coorg-mudhouse-retreat",
+    "subtitle": "Earthy cottages amidst aromatic plantations",
+    "description": [
+      "Located in a secluded coffee estate near Madikeri, this mudhouse offers raw charm.",
+      "Experience Kodava culture, local food, and a rustic workcation in nature.",
+      "Great for remote workers seeking both productivity and peace."
+    ],
+    "place": "Madikeri",
+    "highlighted": true,
+    "type": "Cottage",
+    "tags": ["Coffee Estate", "Rustic", "Workcation"],
+    "pricePerNight": 3500,
+    "rating": 4.5,
+    "bestFor": ["Remote Workers", "Couples"],
+    "videoUrl": "/videos/coorg-mudhouse-retreat.mp4",
+    "heroImage": "/images/stays/coorg-mudhouse-retreat/hero.jpg",
+    "images": [
+      "/images/stays/coorg-mudhouse-retreat/1.jpg",
+      "/images/stays/coorg-mudhouse-retreat/2.jpg",
+      "/images/stays/coorg-mudhouse-retreat/3.jpg"
+    ],
+    "amenities": ["Workspace", "Local Cuisine", "Coffee Walks", "Private Veranda"],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=..."
+  },
+  {
+    "name": "The Fernleaf Garden Stay",
+    "slug": "the-fernleaf-garden-stay",
+    "subtitle": "Cradled by eucalyptus and early mist",
+    "description": [
+      "A serene escape in Ooty’s chilly charm, perfect for solo travelers and families alike.",
+      "The Fernleaf is surrounded by garden trails and hill views that inspire stillness.",
+      "Unplug and breathe deep in this peaceful highland abode."
+    ],
+    "place": "Ooty",
+    "highlighted": true,
+    "type": "Cottage",
+    "tags": ["Hill View", "Chilly", "Peaceful"],
+    "pricePerNight": 3100,
+    "rating": 4.4,
+    "bestFor": ["Families", "Solo Travelers"],
+    "videoUrl": null,
+    "heroImage": "/images/stays/the-fernleaf-garden-stay/hero.jpg",
+    "images": [
+      "/images/stays/the-fernleaf-garden-stay/1.jpg",
+      "/images/stays/the-fernleaf-garden-stay/2.jpg",
+      "/images/stays/the-fernleaf-garden-stay/3.jpg"
+    ],
+    "amenities": ["Library", "Hilltop View", "Breakfast Included"],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=..."
+  },
+  {
+    "name": "Wayanad Wild Cabins",
+    "slug": "wayanad-wild-cabins",
+    "subtitle": "Jungle's edge and whispers of wilderness",
+    "description": [
+      "These wild cabins sit near Wayanad’s forest fringe, ideal for explorers and photographers.",
+      "Expect cicadas by day and cricket choirs by night.",
+      "Wake up to deer calls and dine under firefly-lit skies."
+    ],
+    "place": "Wayanad",
+    "highlighted": true,
+    "type": "Cabin",
+    "tags": ["Wildlife", "Cabin", "Rainy"],
+    "pricePerNight": 2950,
+    "rating": 4.2,
+    "bestFor": ["Photographers", "Explorers"],
+    "videoUrl": "/videos/wayanad-wild-cabins.mp4",
+    "heroImage": "/images/stays/wayanad-wild-cabins/hero.jpg",
+    "images": [
+      "/images/stays/wayanad-wild-cabins/1.jpg",
+      "/images/stays/wayanad-wild-cabins/2.jpg",
+      "/images/stays/wayanad-wild-cabins/3.jpg"
+    ],
+    "amenities": ["Jeep Safari", "Outdoor Shower", "Rainproof Balcony"],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=..."
+  },
+  {
+    "name": "Riverstone Cottages",
+    "slug": "riverstone-cottages",
+    "subtitle": "Birdsong, beans, and bloom in the hills",
+    "description": [
+      "Nestled in Chikkamagalur’s coffee-scented slopes, Riverstone is for romantic souls.",
+      "Perfect for couples and birdwatchers looking for peaceful hillside mornings.",
+      "Unwind with plantation walks and riverside breakfasts."
+    ],
+    "place": "Chikkamagalur",
+    "highlighted": true,
+    "type": "Cottage",
+    "tags": ["Coffee Estate", "Birdwatching", "Hillside"],
+    "pricePerNight": 2700,
+    "rating": 4.6,
+    "bestFor": ["Birders", "Couples"],
+    "videoUrl": null,
+    "heroImage": "/images/stays/riverstone-cottages/hero.jpg",
+    "images": [
+      "/images/stays/riverstone-cottages/1.jpg",
+      "/images/stays/riverstone-cottages/2.jpg",
+      "/images/stays/riverstone-cottages/3.jpg"
+    ],
+    "amenities": ["Birdwatching Deck", "Coffee Tasting", "Hammocks"],
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=..."
+  }
+]
