@@ -4,28 +4,40 @@ import { useParams, notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import stays from '../../../data/stays.json'
 import Footer from '../../../components/sections/footer'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
-  CarouselNext,
+  CarouselNext, 
 } from '../../../@/components/ui/carousel'
-import ContactNow from "../../../components/shared/contactNow"
+import ContactNow from '../../../components/shared/contactNow'
 import { Badge } from '../../../@/components/ui/badge'
 
 export default function StayDetailPage() {
   const { staysSlug } = useParams()
-  const stay = stays.find((s) => s.slug === staysSlug)
+  const [stay, setStay] = useState(null)
+  const [notFoundFlag, setNotFoundFlag] = useState(false)
   const [videoLoaded, setVideoLoaded] = useState(false)
 
-  if (!stay) return notFound()
+  useEffect(() => {
+    if (!staysSlug) return
+    fetch(`/api/stays/${staysSlug}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Not found')
+        return res.json()
+      })
+      .then((data) => setStay(data))
+      .catch(() => setNotFoundFlag(true))
+  }, [staysSlug])
+
+  if (notFoundFlag) return notFound()
+  if (!stay) return <div className="p-10 text-center">Loading...</div>
 
   return (
     <main className="bg-gradient-to-b from-[#fefcf8] via-white to-[#f0fdf4] text-gray-700">
-      {/* Hero section */}
+      {/* Hero */}
       <section className="relative h-[60vh] w-full flex items-center justify-center text-white bg-cover bg-center bg-no-repeat">
         {stay.videoUrl ? (
           <video
@@ -92,7 +104,7 @@ export default function StayDetailPage() {
         ))}
       </section>
 
-      {/* Image Carousel */}
+      {/* Gallery */}
       {stay.images?.length > 0 && (
         <section className="px-6 sm:px-10 pb-16 max-w-5xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">Gallery</h2>
@@ -132,12 +144,12 @@ export default function StayDetailPage() {
       )}
 
       {/* Map */}
-      {stay.mapEmbedUrl && (
+      { (
         <section className="px-6 sm:px-10 pb-20 max-w-5xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">How to Reach</h2>
           <div className="rounded-xl overflow-hidden shadow-lg aspect-video">
             <iframe
-              src={stay.mapEmbedUrl}
+              src={stay.mapEmbedUrl||null}
               width="100%"
               height="100%"
               style={{ border: 0 }}

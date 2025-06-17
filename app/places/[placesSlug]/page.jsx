@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Footer from '../../../components/sections/footer'
@@ -25,10 +25,32 @@ import { Button } from '../../../@/components/ui/button'
 
 export default function PlacePage() {
   const { placesSlug } = useParams()
-  const place = placesData[placesSlug]
+  const [place, setPlace] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [selectedSpot, setSelectedSpot] = useState(null)
 
-  if (!place) return <div className="p-10 text-center">Place not found.</div>
+  useEffect(() => {
+    async function fetchPlace() {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(`/api/places/${placesSlug}`)
+        if (!res.ok) throw new Error('Place not found')
+        const data = await res.json()
+        setPlace(data)
+      } catch (err) {
+        setError(err.message)
+        setPlace(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    if (placesSlug) fetchPlace()
+  }, [placesSlug])
+
+  if (loading) return <div className="p-10 text-center">Loading...</div>
+  if (error || !place) return <div className="p-10 text-center">Place not found.</div>
 
   const placeStays = stays.filter(
     (stay) => stay.place?.toLowerCase() === place.name.toLowerCase()
@@ -89,7 +111,7 @@ export default function PlacePage() {
           Your Stay in {place.name} Awaits
         </h2>
         <p className="text-sm text-gray-600 mb-6">
-          Immerse in nature’s calm — from cozy forest lodges to scenic retreats nestled in the wild.
+          Immerse in nature's calm — from cozy forest lodges to scenic retreats nestled in the wild.
         </p>
         {placeStays.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -101,7 +123,7 @@ export default function PlacePage() {
           </div>
         ) : (
           <p className="text-sm text-gray-500 italic">
-            No stays listed here yet, but we’re on it.
+            No stays listed here yet, but we're on it.
           </p>
         )}
       </section>

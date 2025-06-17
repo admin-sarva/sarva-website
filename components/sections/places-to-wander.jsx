@@ -3,10 +3,49 @@
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import places from "../../data/places.json"
+import { useState, useEffect } from "react"
 
 export default function PlacesToWander() {
   const router = useRouter()
+  const [places, setPlaces] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function fetchPlaces() {
+      try {
+        const res = await fetch('/api/places')
+        if (!res.ok) throw new Error('Failed to fetch places')
+        const data = await res.json()
+        setPlaces(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPlaces()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
+        <div className="text-center">
+          <p className="text-gray-600">Loading places...</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
+        <div className="text-center">
+          <p className="text-red-500">Error loading places: {error}</p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
@@ -33,7 +72,7 @@ export default function PlacesToWander() {
           >
             <div className="relative w-full h-56">
               <Image
-                src={place.image}
+                src={place.heroImage}
                 alt={place.name}
                 fill
                 className="object-cover group-hover:brightness-90 transition duration-500"

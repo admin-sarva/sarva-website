@@ -1,24 +1,44 @@
 'use client'
 
-import { useState } from 'react'
-import stays from '../../data/stays.json'
+import { useState, useEffect } from 'react'
 import StayCard from '../../components/ui/stay-card'
 import StaysHero from '../../components/sections/stays-hero'
 import Footer from '../../components/sections/footer'
-import {  useRouter } from 'next/router'
-
-const uniquePlaces = Array.from(new Set(stays.map(s => s.place)))
-const uniqueTags = Array.from(new Set(stays.flatMap(s => s.tags)))
-const uniqueTypes = Array.from(new Set(stays.map(s => s.type)))
+import { useRouter } from 'next/router'
 
 export default function StaysPage() {
+  const [stays, setStays] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedTags, setSelectedTags] = useState([])
   const [selectedType, setSelectedType] = useState('')
   const [minRating, setMinRating] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
-    const router = useRouter
+  const router = useRouter
+
+  useEffect(() => {
+    setLoading(true)
+    fetch('/api/stays')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch stays')
+        return res.json()
+      })
+      .then(data => {
+        setStays(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
+  }, [])
+
+  const uniquePlaces = Array.from(new Set(stays.map(s => s.place)))
+  const uniqueTags = Array.from(new Set(stays.flatMap(s => s.tags)))
+  const uniqueTypes = Array.from(new Set(stays.map(s => s.type)))
+
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
@@ -164,13 +184,19 @@ export default function StaysPage() {
         </div>
 
         {/* Results Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredStays.map((stay) => (
-            <StayCard key={stay.slug} stay={stay} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center text-gray-500 italic mt-10">Loading stays...</div>
+        ) : error ? (
+          <div className="text-center text-red-500 italic mt-10">{error}</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredStays.map((stay) => (
+              <StayCard key={stay.slug} stay={stay} />
+            ))}
+          </div>
+        )}
 
-        {filteredStays.length === 0 && (
+        {!loading && !error && filteredStays.length === 0 && (
           <div className="text-center text-gray-500 italic mt-10">
             No stays match your filters.
           </div>
