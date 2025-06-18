@@ -71,12 +71,18 @@ export default function PlacesToWander() {
             className="cursor-pointer rounded-xl overflow-hidden shadow-lg group transition transform hover:shadow-xl"
           >
             <div className="relative w-full h-56">
-              <Image
-                src={place.heroImage}
-                alt={place.name}
-                fill
-                className="object-cover group-hover:brightness-90 transition duration-500"
-              />
+              {place.heroImage ? (
+                <Image
+                  src={place.heroImage}
+                  alt={place.name}
+                  fill
+                  className="object-cover group-hover:brightness-90 transition duration-500"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-400">No image available</span>
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
               <div className="absolute bottom-4 left-4 z-20">
                 <h3 className="text-xl text-white font-semibold">{place.name}</h3>
@@ -100,12 +106,18 @@ export default function PlacesToWander() {
             className="min-w-[80%] snap-start shrink-0 rounded-xl overflow-hidden shadow-md bg-white"
           >
             <div className="relative h-56 w-full">
-              <Image
-                src={place.image}
-                alt={place.name}
-                fill
-                className="object-cover"
-              />
+              {place.image ? (
+                <Image
+                  src={place.image}
+                  alt={place.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-gray-400">No image available</span>
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
               <div className="absolute bottom-4 left-4 z-20">
                 <h3 className="text-xl text-white font-semibold">{place.name}</h3>
