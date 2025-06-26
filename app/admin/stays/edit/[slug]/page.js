@@ -1,15 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { Input } from '../../../@/components/ui/input'
-import { Textarea } from '../../../@/components/ui/textarea'
-import { Button } from '../../../@/components/ui/button'
-import { useAuth } from '../../../lib/useAuth'
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { Input } from '../../../../../@/components/ui/input'
+import { Textarea } from '../../../../../@/components/ui/textarea'
+import { Button } from '../../../../../@/components/ui/button'
+import { useAuth } from '../../../../../lib/useAuth'
 
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dlk6lycdy/image/upload'
-const UPLOAD_PRESET = 'sarva_uploads' // e.g. sarva_uploads
+const UPLOAD_PRESET = 'sarva_uploads'
 
-export default function AddStayPage() {
+export default function EditStayPage() {
+  const { slug } = useParams()
+  const router = useRouter()
+  const { isAuthenticated, loading: authLoading, logout } = useAuth()
+  
+  const [stay, setStay] = useState(null)
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -32,7 +38,39 @@ export default function AddStayPage() {
   const [uploadingHero, setUploadingHero] = useState(false)
   const [uploadingGallery, setUploadingGallery] = useState(false)
   const [success, setSuccess] = useState(null)
-  const { isAuthenticated, loading: authLoading, logout } = useAuth()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (slug) {
+      fetch(`/api/stays/${slug}`)
+        .then(res => res.json())
+        .then(data => {
+          setStay(data)
+          setFormData({
+            name: data.name || '',
+            slug: data.slug || '',
+            subtitle: data.subtitle || '',
+            place: data.place || '',
+            type: data.type || '',
+            tags: data.tags ? data.tags.join(', ') : '',
+            pricePerNight: data.pricePerNight || '',
+            rating: data.rating || '',
+            bestFor: data.bestFor ? data.bestFor.join(', ') : '',
+            heroImage: data.heroImage || '',
+            images: data.images || [],
+            videoUrl: data.videoUrl || '',
+            amenities: data.amenities ? data.amenities.join(', ') : '',
+            description: data.description ? data.description.join('\n') : '',
+            mapEmbedUrl: data.mapEmbedUrl || '',
+          })
+          setLoading(false)
+        })
+        .catch(err => {
+          console.error('Error fetching stay:', err)
+          setLoading(false)
+        })
+    }
+  }, [slug])
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -74,6 +112,13 @@ export default function AddStayPage() {
     setUploadingGallery(false)
   }
 
+  const removeGalleryImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }))
+  }
+
   const handleSubmit = async () => {
     setSubmitting(true)
 
@@ -81,27 +126,25 @@ export default function AddStayPage() {
       ...formData,
       pricePerNight: Number(formData.pricePerNight),
       rating: Number(formData.rating),
-      tags: formData.tags.split(',').map(t => t.trim()),
-      bestFor: formData.bestFor.split(',').map(t => t.trim()),
-      amenities: formData.amenities.split(',').map(t => t.trim()),
+      tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
+      bestFor: formData.bestFor.split(',').map(t => t.trim()).filter(Boolean),
+      amenities: formData.amenities.split(',').map(t => t.trim()).filter(Boolean),
       description: formData.description.split('\n').filter(Boolean),
     }
 
     try {
-      const res = await fetch('/api/stays', {
-        method: 'POST',
+      const res = await fetch(`/api/stays/${slug}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
 
-      if (!res.ok) throw new Error('Failed to add stay')
+      if (!res.ok) throw new Error('Failed to update stay')
 
       setSuccess(true)
-      setFormData({
-        name: '', slug: '', subtitle: '', place: '', type: '', tags: '',
-        pricePerNight: '', rating: '', bestFor: '', heroImage: '',
-        images: [], videoUrl: '', amenities: '', description: '', mapEmbedUrl: ''
-      })
+      setTimeout(() => {
+        router.push('/admin/stays')
+      }, 2000)
     } catch (err) {
       console.error(err)
       setSuccess(false)
@@ -110,16 +153,23 @@ export default function AddStayPage() {
     }
   }
 
-  if (authLoading) return <div className="p-8">Loading...</div>
-  if (!isAuthenticated) return null // Will redirect to login
+  if (authLoading || loading) return <div className="p-8">Loading...</div>
+  if (!isAuthenticated) return null
+
+  if (!stay) return <div className="p-8">Stay not found</div>
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Add a New Stay</h1>
-        <Button onClick={logout} variant="outline">
-          Logout
-        </Button>
+        <h1 className="text-2xl font-bold">Edit Stay: {stay.name}</h1>
+        <div className="flex gap-2">
+          <Button onClick={() => router.push('/admin/stays')} variant="outline">
+            Back to Stays
+          </Button>
+          <Button onClick={logout} variant="outline">
+            Logout
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4">
@@ -151,7 +201,15 @@ export default function AddStayPage() {
           ) : formData.images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
               {formData.images.map((url, i) => (
-                <img key={i} src={url} alt={`Image ${i}`} className="w-full h-24 object-cover rounded" />
+                <div key={i} className="relative">
+                  <img src={url} alt={`Image ${i}`} className="w-full h-24 object-cover rounded" />
+                  <button
+                    onClick={() => removeGalleryImage(i)}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
           )}
@@ -163,12 +221,12 @@ export default function AddStayPage() {
         <Input name="mapEmbedUrl" placeholder="Map Embed URL" value={formData.mapEmbedUrl} onChange={handleChange} />
 
         <Button disabled={submitting} onClick={handleSubmit}>
-          {submitting ? 'Submitting...' : 'Submit Stay'}
+          {submitting ? 'Updating...' : 'Update Stay'}
         </Button>
 
-        {success === true && <p className="text-green-600 text-sm">Stay added successfully.</p>}
-        {success === false && <p className="text-red-600 text-sm">Failed to add stay.</p>}
+        {success === true && <p className="text-green-600 text-sm">Stay updated successfully. Redirecting...</p>}
+        {success === false && <p className="text-red-600 text-sm">Failed to update stay.</p>}
       </div>
     </div>
   )
-}
+} 

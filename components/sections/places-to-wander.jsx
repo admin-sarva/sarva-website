@@ -49,7 +49,7 @@ export default function PlacesToWander() {
 
   return (
     <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
-      <div className="text-center mb-14">
+      <div className="text-center mb-14 max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-serif text-emerald-900">
           Where would you like to wander?
         </h2>
@@ -59,7 +59,7 @@ export default function PlacesToWander() {
       </div>
 
       {/* Desktop grid view */}
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {places.map((place, idx) => (
           <motion.div
             key={place.slug}
@@ -94,7 +94,7 @@ export default function PlacesToWander() {
       </div>
 
       {/* Mobile horizontal scroll view */}
-      <div id="places-scroll" className="md:hidden flex gap-5 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 pt-2 pb-4">
+      <div id="places-scroll" className="md:hidden flex gap-5 overflow-x-auto snap-x snap-mandatory pt-2 pb-4 max-w-6xl mx-auto">
         {places.map((place, idx) => (
           <motion.div
             key={place.slug}

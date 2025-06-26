@@ -15,6 +15,8 @@ const StaySchema = new mongoose.Schema(
     videoUrl: String,
     heroImage: String,
     images: [String],
+    amenities: [String],
+    mapEmbedUrl: String,
   },
   { timestamps: true }
 )

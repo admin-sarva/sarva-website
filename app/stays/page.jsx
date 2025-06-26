@@ -56,18 +56,18 @@ export default function StaysPage() {
 
   const filteredStays = stays.filter((stay) => {
     const matchesSearch =
-      stay.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      stay.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      stay?.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      stay?.description?.toLowerCase().includes(searchTerm?.toLowerCase())
 
-    const matchesPlace = !selectedPlace || stay.place === selectedPlace
-    const matchesType = !selectedType || stay.type === selectedType
+    const matchesPlace = !selectedPlace || stay?.place === selectedPlace
+    const matchesType = !selectedType || stay?.type === selectedType
     const matchesTags =
-      selectedTags.length === 0 || selectedTags.every(tag => stay.tags.includes(tag))
+      selectedTags.length === 0 || selectedTags.every(tag => stay?.tags.includes(tag))
 
-    const stayPrice = stay.pricePerNight || 0
+    const stayPrice = stay?.pricePerNight || 0
     const priceOk = !maxPrice || stayPrice <= parseInt(maxPrice)
 
-    const stayRating = stay.rating || 0
+    const stayRating = stay?.rating || 0
     const ratingOk = !minRating || stayRating >= parseFloat(minRating)
 
     return (

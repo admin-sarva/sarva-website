@@ -2,24 +2,29 @@
 
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../../../@/components/ui/dialog"
+import { Button } from "../../../@/components/ui/button"
+import { useAuth } from "../../../lib/useAuth"
 
 export default function AdminNotesPage() {
   const [notes, setNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedNote, setSelectedNote] = useState(null)
+  const { isAuthenticated, loading: authLoading, logout } = useAuth()
 
   useEffect(() => {
-    fetch("/api/notes?status=pending")
-      .then(res => res.json())
-      .then(pending => {
-        fetch("/api/notes?status=approved")
-          .then(res => res.json())
-          .then(approved => {
-            setNotes([...pending, ...approved])
-            setLoading(false)
-          })
-      })
-  }, [])
+    if (!authLoading && isAuthenticated) {
+      fetch("/api/notes?status=pending")
+        .then(res => res.json())
+        .then(pending => {
+          fetch("/api/notes?status=approved")
+            .then(res => res.json())
+            .then(approved => {
+              setNotes([...pending, ...approved])
+              setLoading(false)
+            })
+        })
+    }
+  }, [authLoading, isAuthenticated])
 
   const approveNote = async (id) => {
     await fetch("/api/notes", {
@@ -30,11 +35,17 @@ export default function AdminNotesPage() {
     setNotes(notes => notes.map(n => n._id === id ? { ...n, status: "approved" } : n))
   }
 
-  if (loading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8">Loading...</div>
+  if (!isAuthenticated) return null // Will redirect to login
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">All Wander Notes</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">All Wander Notes</h1>
+        <Button onClick={logout} variant="outline">
+          Logout
+        </Button>
+      </div>
       <div className="grid gap-6">
         {notes.map(note => (
           <div key={note._id} className="bg-white rounded-lg shadow p-4">

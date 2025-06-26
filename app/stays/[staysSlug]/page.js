@@ -84,9 +84,6 @@ export default function StayDetailPage() {
         </div>
         <div className="flex items-center justify-between mt-4">
           <div>
-            <p className="text-xl font-semibold text-emerald-800">
-              ₹{stay.pricePerNight.toLocaleString()} / night
-            </p>
             <p className="text-sm text-gray-500">
               Rated {stay.rating} ★ — Best for {stay.bestFor.join(', ')}
             </p>
@@ -144,12 +141,12 @@ export default function StayDetailPage() {
       )}
 
       {/* Map */}
-      { (
+      {/* {stay.mapEmbedUrl && (
         <section className="px-6 sm:px-10 pb-20 max-w-5xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">How to Reach</h2>
           <div className="rounded-xl overflow-hidden shadow-lg aspect-video">
             <iframe
-              src={stay.mapEmbedUrl||null}
+              src={stay.mapEmbedUrl}
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -159,7 +156,7 @@ export default function StayDetailPage() {
             />
           </div>
         </section>
-      )}
+      )} */}
 
       <Footer />
     </main>
