@@ -3,11 +3,12 @@
 import { useAuth } from "../../lib/useAuth"
 import { Button } from "../../@/components/ui/button"
 import Link from "next/link"
+import Loading from "../../components/shared/loading"
 
 export default function AdminDashboard() {
   const { isAuthenticated, loading: authLoading, logout } = useAuth()
 
-  if (authLoading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8"><Loading /> </div>
   if (!isAuthenticated) return null // Will redirect to login
 
   return (

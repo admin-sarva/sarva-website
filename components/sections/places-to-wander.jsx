@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState, useEffect } from "react"
+import Loading from "../shared/loading"
 
 export default function PlacesToWander() {
   const router = useRouter()
@@ -27,11 +28,24 @@ export default function PlacesToWander() {
     fetchPlaces()
   }, [])
 
+  const getValidImageSrc = (place) => {
+    if (place.heroImage && (place.heroImage.startsWith('/') || place.heroImage.startsWith('http'))) {
+      return place.heroImage
+    }
+    if (place.image && (place.image.startsWith('/') || place.image.startsWith('http'))) {
+      return place.image
+    }
+    if (place.images && place.images.length > 0 && (place.images[0].startsWith('/') || place.images[0].startsWith('http'))) {
+      return place.images[0]
+    }
+    return null
+  }
+
   if (loading) {
     return (
-      <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
+      <section className="py-20 px-6 md:px-12 bg-cover bg-no-repeat bg-center">
         <div className="text-center">
-          <p className="text-gray-600">Loading places...</p>
+          <p className="text-gray-600"> <Loading /> </p>
         </div>
       </section>
     )
@@ -39,7 +53,7 @@ export default function PlacesToWander() {
 
   if (error) {
     return (
-      <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
+      <section className="py-20 px-6 md:px-12 bg-cover bg-no-repeat bg-center">
         <div className="text-center">
           <p className="text-red-500">Error loading places: {error}</p>
         </div>
@@ -48,90 +62,91 @@ export default function PlacesToWander() {
   }
 
   return (
-    <section className="py-20 px-6 md:px-12 bg-[url('/images/shared/bg-texture.png')] bg-cover bg-no-repeat bg-center">
+    <section className="py-20 px-6 md:px-12  bg-cover bg-no-repeat bg-center">
       <div className="text-center mb-14 max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-serif text-emerald-900">
           Where would you like to wander?
         </h2>
         <p className="mt-3 text-gray-700 text-base md:text-lg">
-          From monsoon-kissed hills to coastlines that hum at sunset  - your story begins here.
+          From monsoon-kissed hills to coastlines that hum at sunset — your story begins here.
         </p>
       </div>
 
       {/* Desktop grid view */}
       <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {places.map((place, idx) => (
-          <motion.div
-            key={place.slug}
-            whileHover={{ scale: 1.03 }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: idx * 0.1 }}
-            onClick={() => router.push(`/places/${place.slug}`)}
-            className="cursor-pointer rounded-xl overflow-hidden shadow-lg group transition transform hover:shadow-xl"
-          >
-            <div className="relative w-full h-56">
-              {place.heroImage ? (
-                <Image
-                  src={place.heroImage}
-                  alt={place.name}
-                  fill
-                  className="object-cover group-hover:brightness-90 transition duration-500"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-400">No image available</span>
+        {places.map((place, idx) => {
+          const src = getValidImageSrc(place)
+          return (
+            <motion.div
+              key={place.slug}
+              whileHover={{ scale: 1.03 }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              onClick={() => router.push(`/places/${place.slug}`)}
+              className="cursor-pointer rounded-xl overflow-hidden shadow-lg group transition transform hover:shadow-xl"
+            >
+              <div className="relative w-full h-56">
+                {src ? (
+                  <Image
+                    src={src}
+                    alt={place.name}
+                    fill
+                    className="object-cover group-hover:brightness-90 transition duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400">No image available</span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
+                <div className="absolute bottom-4 left-4 z-20">
+                  <h3 className="text-xl text-white font-semibold">{place.name}</h3>
+                  <p className="text-sm italic text-gray-200">{place.caption}</p>
                 </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
-              <div className="absolute bottom-4 left-4 z-20">
-                <h3 className="text-xl text-white font-semibold">{place.name}</h3>
-                <p className="text-sm italic text-gray-200">{place.caption}</p>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          )
+        })}
       </div>
 
       {/* Mobile horizontal scroll view */}
       <div id="places-scroll" className="md:hidden flex gap-5 overflow-x-auto snap-x snap-mandatory pt-2 pb-4 max-w-6xl mx-auto">
-        {places.map((place, idx) => (
-          <motion.div
-            key={place.slug}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: idx * 0.05 }}
-            onClick={() => router.push(`/places/${place.slug}`)}
-            className="min-w-[80%] snap-start shrink-0 rounded-xl overflow-hidden shadow-md bg-white"
-          >
-            <div className="relative h-56 w-full">
-              {place.image ? (
-                <Image
-                  src={place.image}
-                  alt={place.name}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-400">No image available</span>
+        {places.map((place, idx) => {
+          const src = getValidImageSrc(place)
+          return (
+            <motion.div
+              key={place.slug}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              onClick={() => router.push(`/places/${place.slug}`)}
+              className="min-w-[80%] snap-start shrink-0 rounded-xl overflow-hidden shadow-md bg-white"
+            >
+              <div className="relative h-56 w-full">
+                {src ? (
+                  <Image
+                    src={src}
+                    alt={place.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400">No image available</span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+                <div className="absolute bottom-4 left-4 z-20">
+                  <h3 className="text-xl text-white font-semibold">{place.name}</h3>
+                  <p className="text-sm italic text-gray-200">{place.caption}</p>
                 </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
-              <div className="absolute bottom-4 left-4 z-20">
-                <h3 className="text-xl text-white font-semibold">{place.name}</h3>
-                <p className="text-sm italic text-gray-200">{place.caption}</p>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          )
+        })}
       </div>
-
-      {/* Scroll right arrow – mobile only */}
-      {/* <div className="md:hidden flex justify-end pr-6 mt-2">
-      <ScrollArrowButton />
-      </div> */}
     </section>
   )
 }

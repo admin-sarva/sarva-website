@@ -2,9 +2,18 @@ import { dbConnect } from '../../../lib/db'
 import Stay from '../../models/stay'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(req) {
   await dbConnect()
-  const stays = await Stay.find({})
+  
+  const { searchParams } = new URL(req.url)
+  const place = searchParams.get('place')
+  
+  let query = {}
+  if (place) {
+    query.place = place
+  }
+  
+  const stays = await Stay.find(query)
   return NextResponse.json(stays)
 }
 

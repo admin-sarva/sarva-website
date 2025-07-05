@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../../../@/components/ui/dialog"
 import { Button } from "../../../@/components/ui/button"
 import { useAuth } from "../../../lib/useAuth"
+import Loading from "../../../components/shared/loading"
 
 export default function AdminNotesPage() {
   const [notes, setNotes] = useState([])
@@ -35,7 +36,7 @@ export default function AdminNotesPage() {
     setNotes(notes => notes.map(n => n._id === id ? { ...n, status: "approved" } : n))
   }
 
-  if (authLoading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8"> <Loading /> </div>
   if (!isAuthenticated) return null // Will redirect to login
 
   return (

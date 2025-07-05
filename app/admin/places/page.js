@@ -5,6 +5,7 @@ import { Input } from '../../../@/components/ui/input'
 import { Textarea } from '../../../@/components/ui/textarea'
 import { Button } from '../../../@/components/ui/button'
 import { useAuth } from '../../../lib/useAuth'
+import Loading from '../../../components/shared/loading'
 
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dlk6lycdy/image/upload'
 const UPLOAD_PRESET = 'sarva_uploads'
@@ -199,7 +200,7 @@ export default function AddPlacePage() {
     }
   }
 
-  if (authLoading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8">  <Loading /> </div>
   if (!isAuthenticated) return null // Will redirect to login
 
   return (

@@ -5,6 +5,7 @@ import StayCard from '../../components/ui/stay-card'
 import StaysHero from '../../components/sections/stays-hero'
 import Footer from '../../components/sections/footer'
 import { useRouter } from 'next/router'
+import Loading from '../../components/shared/loading'
 
 export default function StaysPage() {
   const [stays, setStays] = useState([])
@@ -185,7 +186,7 @@ export default function StaysPage() {
 
         {/* Results Grid */}
         {loading ? (
-          <div className="text-center text-gray-500 italic mt-10">Loading stays...</div>
+          <div className="text-center text-gray-500 italic mt-10"> <Loading /> </div>
         ) : error ? (
           <div className="text-center text-red-500 italic mt-10">{error}</div>
         ) : (

@@ -1,36 +1,50 @@
-import { Resend } from 'resend'
-import { NextRequest, NextResponse } from 'next/server'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { NextResponse } from 'next/server'
+import { dbConnect } from '../../../lib/db'
+import Contact from '../../models/contact'
 
 export async function POST(req) {
   try {
-    console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY)
-
-    const { name, email, message } = await req.json()
-    console.log(name, email, message);
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+    await dbConnect()
+    
+    const { name, email, message, members, destination } = await req.json()
+    
+    if (!name || !email || !message || !members || !destination) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const data = await resend.emails.send({
-      from: process.env.FROM_EMAIL,
-      to: process.env.TO_EMAIL,
-      subject: `New message from ${name}`,
-      reply_to: email,
-      html: `
-        <div style="font-family:sans-serif;">
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong><br/>${message}</p>
-        </div>
-      `,
-    })
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
+    }
 
-    return NextResponse.json({ success: true, data })
+    // Validate members is a positive number
+    if (isNaN(members) || members < 1 || members > 50) {
+      return NextResponse.json({ error: 'Invalid number of members' }, { status: 400 })
+    }
+
+    // Save to database
+    const contact = new Contact({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      message: message.trim(),
+      members: parseInt(members),
+      destination: destination.trim()
+    })
+    
+    await contact.save()
+
+    console.log('Contact saved successfully:', contact._id)
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Contact form submitted successfully',
+      contactId: contact._id 
+    })
   } catch (error) {
     console.error('[CONTACT_ERROR]', error)
-    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Failed to process contact form',
+      details: error.message 
+    }, { status: 500 })
   }
 }

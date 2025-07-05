@@ -14,6 +14,7 @@ import {
 } from '../../../@/components/ui/carousel'
 import ContactNow from '../../../components/shared/contactNow'
 import { Badge } from '../../../@/components/ui/badge'
+import Loading from '../../../components/shared/loading'
 
 export default function StayDetailPage() {
   const { staysSlug } = useParams()
@@ -33,7 +34,7 @@ export default function StayDetailPage() {
   }, [staysSlug])
 
   if (notFoundFlag) return notFound()
-  if (!stay) return <div className="p-10 text-center">Loading...</div>
+  if (!stay) return <div className="p-10 text-center"><Loading /></div>
 
   return (
     <main className="bg-gradient-to-b from-[#fefcf8] via-white to-[#f0fdf4] text-gray-700">

@@ -34,3 +34,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Email Integration Setup
+
+This project uses [Resend](https://resend.com) for sending emails from the contact form. To set up email functionality:
+
+### 1. Create a Resend Account
+- Sign up at [resend.com](https://resend.com)
+- Verify your domain or use the sandbox domain for testing
+
+### 2. Get Your API Key
+- Go to your Resend dashboard
+- Navigate to API Keys section
+- Create a new API key
+
+### 3. Environment Variables
+Create a `.env.local` file in your project root with:
+
+```env
+# Resend API Configuration
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Email Configuration
+FROM_EMAIL=noreply@yourdomain.com
+```
+
+### 4. Domain Verification
+- In your Resend dashboard, add and verify your domain
+- Update the `FROM_EMAIL` to use your verified domain
+- For testing, you can use the sandbox domain provided by Resend
+
+### 5. Contact Form
+The contact form will send emails to `xyz@mmmm.com` as configured in the API route.

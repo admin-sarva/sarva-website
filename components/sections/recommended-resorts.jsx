@@ -3,6 +3,7 @@
 import StayCard from "../../components/ui/stay-card"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import Loading from "../shared/loading"
 
 export default function RecommendedResorts() {
   const [resorts, setResorts] = useState([])
@@ -28,7 +29,7 @@ export default function RecommendedResorts() {
     return (
       <section className="bg-gradient-to-b from-white to-[#fefcf8] py-20 px-4 sm:px-6 md:px-16">
         <div className="text-center">
-          <p className="text-gray-600">Loading recommended resorts...</p>
+          <p className="text-gray-600"> <Loading /> </p>
         </div>
       </section>
     )

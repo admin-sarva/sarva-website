@@ -20,41 +20,52 @@ import {
   DialogTrigger,
   DialogContent,
 } from '../../../@/components/ui/dialog'
-import stays from '../../../data/stays.json'
+
 import { Button } from '../../../@/components/ui/button'
+import Loading from '../../../components/shared/loading'
 
 export default function PlacePage() {
   const { placesSlug } = useParams()
   const [place, setPlace] = useState(null)
+  const [stays, setStays] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedSpot, setSelectedSpot] = useState(null)
 
   useEffect(() => {
-    async function fetchPlace() {
+    async function fetchData() {
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/places/${placesSlug}`)
-        if (!res.ok) throw new Error('Place not found')
-        const data = await res.json()
-        setPlace(data)
+        // Fetch place data
+        const placeRes = await fetch(`/api/places/${placesSlug}`)
+        if (!placeRes.ok) throw new Error('Place not found')
+        const placeData = await placeRes.json()
+        setPlace(placeData)
+
+        // Fetch stays data for this specific place
+        const staysRes = await fetch(`/api/stays?place=${placeData.slug}`)
+        if (!staysRes.ok) throw new Error('Failed to fetch stays')
+        const staysData = await staysRes.json()
+        setStays(staysData)
       } catch (err) {
         setError(err.message)
         setPlace(null)
+        setStays([])
       } finally {
         setLoading(false)
       }
     }
-    if (placesSlug) fetchPlace()
+    if (placesSlug) fetchData()
   }, [placesSlug])
 
-  if (loading) return <div className="p-10 text-center">Loading...</div>
+  if (loading) return <div className="p-10 text-center"> <Loading /> </div>
   if (error || !place) return <div className="p-10 text-center">Place not found.</div>
 
-  const placeStays = stays.filter(
-    (stay) => stay.place?.toLowerCase() === place.name.toLowerCase()
-  )
+  // The stays are already filtered by place from the API
+  const placeStays = stays
+  
+  console.log('Stays for this place:', placeStays)
 
   return (
     <main className="bg-gradient-to-b from-[#fefcf8] via-white to-[#f0fdf4] text-gray-700">

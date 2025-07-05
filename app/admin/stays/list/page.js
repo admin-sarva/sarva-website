@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "../../../../@/components/ui/button"
 import { useAuth } from "../../../../lib/useAuth"
+import Loading from "../../../../components/shared/loading"
 
 export default function StaysListPage() {
   const [stays, setStays] = useState([])
@@ -45,7 +46,7 @@ export default function StaysListPage() {
     }
   }
 
-  if (authLoading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8"><Loading /></div>
   if (!isAuthenticated) return null
 
   return (
@@ -66,7 +67,7 @@ export default function StaysListPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-8">Loading stays...</div>
+        <div className="text-center py-8"><Loading /></div>
       ) : (
         <div className="grid gap-4">
           {stays.map(stay => (

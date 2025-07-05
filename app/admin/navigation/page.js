@@ -3,6 +3,7 @@
 import { useAuth } from "../../../lib/useAuth"
 import { Button } from "../../../@/components/ui/button"
 import Link from "next/link"
+import Loading from "../../../components/shared/loading"
 
 export default function AdminNavigationPage() {
   const { isAuthenticated, loading: authLoading, logout } = useAuth()
@@ -14,6 +15,13 @@ export default function AdminNavigationPage() {
       path: "/admin",
       icon: "🏠",
       category: "Main"
+    },
+    {
+      title: "Contact Submissions",
+      description: "View and manage contact form submissions from visitors",
+      path: "/admin/contacts",
+      icon: "📧",
+      category: "Content"
     },
     {
       title: "Wander Notes Management",
@@ -53,7 +61,7 @@ export default function AdminNavigationPage() {
     return acc
   }, {})
 
-  if (authLoading) return <div className="p-8">Loading...</div>
+  if (authLoading) return <div className="p-8"><Loading /> </div>
   if (!isAuthenticated) return null // Will redirect to login
 
   return (
@@ -109,6 +117,11 @@ export default function AdminNavigationPage() {
         <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-xl font-semibold text-emerald-800 mb-4">Quick Access</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link href="/admin/contacts">
+              <Button className="w-full" variant="outline">
+                📧 Contacts
+              </Button>
+            </Link>
             <Link href="/admin/notes">
               <Button className="w-full" variant="outline">
                 📝 Notes
@@ -124,17 +137,13 @@ export default function AdminNavigationPage() {
                 🗺️ Places
               </Button>
             </Link>
-            <Link href="/admin">
-              <Button className="w-full" variant="outline">
-                🏠 Dashboard
-              </Button>
-            </Link>
           </div>
         </div>
 
         <div className="mt-8 bg-emerald-50 rounded-lg p-6">
           <h2 className="text-lg font-semibold text-emerald-800 mb-3">Admin Panel Features</h2>
           <ul className="space-y-2 text-sm text-gray-700">
+            <li>✅ <strong>Contact Management:</strong> View and manage contact form submissions</li>
             <li>✅ <strong>Wander Notes:</strong> Review and approve user submissions</li>
             <li>✅ <strong>Stays Management:</strong> Add/edit accommodation listings with image uploads</li>
             <li>✅ <strong>Places Management:</strong> Create destination pages with rich content</li>
