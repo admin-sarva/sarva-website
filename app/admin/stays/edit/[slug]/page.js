@@ -160,73 +160,170 @@ export default function EditStayPage() {
   if (!stay) return <div className="p-8">Stay not found</div>
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-12">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Edit Stay: {stay.name}</h1>
-        <div className="flex gap-2">
-          <Button onClick={() => router.push('/admin/stays')} variant="outline">
-            Back to Stays
-          </Button>
-          <Button onClick={logout} variant="outline">
-            Logout
-          </Button>
-        </div>
-      </div>
-
-      <div className="grid gap-4">
-        <Input name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
-        <Input name="slug" placeholder="Slug (e.g. misty-canopy)" value={formData.slug} onChange={handleChange} />
-        <Input name="subtitle" placeholder="Subtitle" value={formData.subtitle} onChange={handleChange} />
-        <Input name="place" placeholder="Place" value={formData.place} onChange={handleChange} />
-        <Input name="type" placeholder="Type (e.g. Treehouse, Homestay)" value={formData.type} onChange={handleChange} />
-        <Input name="tags" placeholder="Tags (comma-separated)" value={formData.tags} onChange={handleChange} />
-        <Input name="pricePerNight" placeholder="Price Per Night" value={formData.pricePerNight} onChange={handleChange} />
-        <Input name="rating" placeholder="Rating" value={formData.rating} onChange={handleChange} />
-        <Input name="bestFor" placeholder="Best For (comma-separated)" value={formData.bestFor} onChange={handleChange} />
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Hero Image</label>
-          <input type="file" accept="image/*" onChange={handleHeroUpload} />
-          {uploadingHero ? (
-            <p className="text-sm text-gray-500">Uploading hero image...</p>
-          ) : formData.heroImage && (
-            <img src={formData.heroImage} alt="Hero" className="w-full h-40 object-cover rounded" />
-          )}
+    <div className="min-h-screen bg-gradient-to-br from-[#ecfdf5] to-white">
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-emerald-900">Edit Stay</h1>
+            <p className="text-gray-600 mt-1">{stay.name}</p>
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={() => router.push('/admin/stays/list')} variant="outline">
+              View All Stays
+            </Button>
+            <Button onClick={() => router.push('/admin/stays')} variant="outline">
+              Add New Stay
+            </Button>
+            <Button onClick={() => router.push('/admin')} variant="outline">
+              Dashboard
+            </Button>
+            <Button onClick={logout} variant="outline">
+              Logout
+            </Button>
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Gallery Images</label>
-          <input type="file" accept="image/*" multiple onChange={handleGalleryUpload} />
-          {uploadingGallery ? (
-            <p className="text-sm text-gray-500">Uploading gallery images...</p>
-          ) : formData.images.length > 0 && (
-            <div className="grid grid-cols-3 gap-2">
-              {formData.images.map((url, i) => (
-                <div key={i} className="relative">
-                  <img src={url} alt={`Image ${i}`} className="w-full h-24 object-cover rounded" />
-                  <button
-                    onClick={() => removeGalleryImage(i)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs hover:bg-red-600"
-                  >
-                    ×
-                  </button>
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="grid gap-8 p-8">
+            {/* Basic Information Section */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-emerald-800 mb-4">Basic Information</h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Name</label>
+                  <Input name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
                 </div>
-              ))}
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Slug</label>
+                  <Input name="slug" placeholder="Slug (e.g. misty-canopy)" value={formData.slug} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Subtitle</label>
+                  <Input name="subtitle" placeholder="Subtitle" value={formData.subtitle} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Place</label>
+                  <Input name="place" placeholder="Place" value={formData.place} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Type</label>
+                  <Input name="type" placeholder="Type (e.g. Treehouse, Homestay)" value={formData.type} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Price Per Night (₹)</label>
+                  <Input name="pricePerNight" type="number" placeholder="Price Per Night" value={formData.pricePerNight} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Rating</label>
+                  <Input name="rating" type="number" step="0.1" placeholder="Rating (0-5)" value={formData.rating} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Tags</label>
+                  <Input name="tags" placeholder="Tags (comma-separated)" value={formData.tags} onChange={handleChange} />
+                </div>
+                <div className="col-span-2">
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Best For</label>
+                  <Input name="bestFor" placeholder="Best For (comma-separated)" value={formData.bestFor} onChange={handleChange} />
+                </div>
+              </div>
             </div>
-          )}
+
+            {/* Images Section */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-emerald-800 mb-4">Images & Media</h2>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 block">Hero Image</label>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleHeroUpload}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                  />
+                  {uploadingHero ? (
+                    <p className="text-sm text-gray-500 mt-2">Uploading hero image...</p>
+                  ) : formData.heroImage && (
+                    <div className="mt-3">
+                      <img src={formData.heroImage} alt="Hero" className="w-full h-48 object-cover rounded-lg border-2 border-gray-200" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700 block">Gallery Images</label>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    multiple 
+                    onChange={handleGalleryUpload}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                  />
+                  {uploadingGallery ? (
+                    <p className="text-sm text-gray-500 mt-2">Uploading gallery images...</p>
+                  ) : formData.images.length > 0 && (
+                    <div className="grid grid-cols-4 gap-3 mt-3">
+                      {formData.images.map((url, i) => (
+                        <div key={i} className="relative group">
+                          <img src={url} alt={`Image ${i}`} className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
+                          <button
+                            onClick={() => removeGalleryImage(i)}
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 text-sm hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                            title="Remove image"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Video URL (optional)</label>
+                  <Input name="videoUrl" placeholder="Video URL (optional)" value={formData.videoUrl} onChange={handleChange} />
+                </div>
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-emerald-800 mb-4">Content</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Description</label>
+                  <Textarea 
+                    name="description" 
+                    placeholder="Description (1 paragraph per line)" 
+                    rows={6} 
+                    value={formData.description} 
+                    onChange={handleChange}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Enter each paragraph on a new line</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Amenities</label>
+                  <Input name="amenities" placeholder="Amenities (comma-separated)" value={formData.amenities} onChange={handleChange} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Map Embed URL</label>
+                  <Input name="mapEmbedUrl" placeholder="Map Embed URL" value={formData.mapEmbedUrl} onChange={handleChange} />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Section */}
+            <div className="flex justify-between items-center pt-4">
+              <div>
+                {success === true && <p className="text-green-600 text-sm font-medium">✓ Stay updated successfully. Redirecting...</p>}
+                {success === false && <p className="text-red-600 text-sm font-medium">✗ Failed to update stay. Please try again.</p>}
+              </div>
+              <Button disabled={submitting} onClick={handleSubmit} className="bg-emerald-600 hover:bg-emerald-700 text-white px-8">
+                {submitting ? 'Updating...' : 'Update Stay'}
+              </Button>
+            </div>
+          </div>
         </div>
-
-        <Input name="videoUrl" placeholder="Video URL (optional)" value={formData.videoUrl} onChange={handleChange} />
-        <Textarea name="description" placeholder="Description (1 paragraph per line)" rows={4} value={formData.description} onChange={handleChange} />
-        <Input name="amenities" placeholder="Amenities (comma-separated)" value={formData.amenities} onChange={handleChange} />
-        <Input name="mapEmbedUrl" placeholder="Map Embed URL" value={formData.mapEmbedUrl} onChange={handleChange} />
-
-        <Button disabled={submitting} onClick={handleSubmit}>
-          {submitting ? 'Updating...' : 'Update Stay'}
-        </Button>
-
-        {success === true && <p className="text-green-600 text-sm">Stay updated successfully. Redirecting...</p>}
-        {success === false && <p className="text-red-600 text-sm">Failed to update stay.</p>}
       </div>
     </div>
   )

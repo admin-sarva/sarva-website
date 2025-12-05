@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Input } from '../../../@/components/ui/input'
 import { Textarea } from '../../../@/components/ui/textarea'
 import { Button } from '../../../@/components/ui/button'
@@ -11,6 +12,7 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dlk6lycdy/image/u
 const UPLOAD_PRESET = 'sarva_uploads' // e.g. sarva_uploads
 
 export default function AddStayPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -118,9 +120,17 @@ export default function AddStayPage() {
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Add a New Stay</h1>
-        <Button onClick={logout} variant="outline">
-          Logout
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => router.push('/admin/stays/list')} variant="outline">
+            View All Stays
+          </Button>
+          <Button onClick={() => router.push('/admin')} variant="outline">
+            Dashboard
+          </Button>
+          <Button onClick={logout} variant="outline">
+            Logout
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4">
@@ -152,7 +162,15 @@ export default function AddStayPage() {
           ) : formData.images.length > 0 && (
             <div className="grid grid-cols-3 gap-2">
               {formData.images.map((url, i) => (
-                <img key={i} src={url} alt={`Image ${i}`} className="w-full h-24 object-cover rounded" />
+                <div key={i} className="relative group">
+                  <img src={url} alt={`Image ${i}`} className="w-full h-24 object-cover rounded" />
+                  <button
+                    onClick={() => removeGalleryImage(i)}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
           )}

@@ -34,3 +34,20 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Failed to update stay' }, { status: 500 })
   }
 }
+
+export async function DELETE(req, { params }) {
+  await dbConnect()
+  
+  try {
+    const stay = await Stay.findOneAndDelete({ slug: params.slug })
+
+    if (!stay) {
+      return NextResponse.json({ error: 'Stay not found' }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: 'Stay deleted successfully' })
+  } catch (error) {
+    console.error('Error deleting stay:', error)
+    return NextResponse.json({ error: 'Failed to delete stay' }, { status: 500 })
+  }
+}

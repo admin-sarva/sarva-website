@@ -33,3 +33,20 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Failed to update place' }, { status: 500 })
   }
 }
+
+export async function DELETE(req, { params }) {
+  await dbConnect()
+  
+  try {
+    const place = await Place.findOneAndDelete({ slug: params.slug })
+
+    if (!place) {
+      return NextResponse.json({ error: 'Place not found' }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: 'Place deleted successfully' })
+  } catch (error) {
+    console.error('Error deleting place:', error)
+    return NextResponse.json({ error: 'Failed to delete place' }, { status: 500 })
+  }
+}

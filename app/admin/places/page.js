@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Input } from '../../../@/components/ui/input'
 import { Textarea } from '../../../@/components/ui/textarea'
 import { Button } from '../../../@/components/ui/button'
@@ -18,6 +19,7 @@ function arrayMove(arr, from, to) {
 }
 
 export default function AddPlacePage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -207,9 +209,17 @@ export default function AddPlacePage() {
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Add a New Place</h1>
-        <Button onClick={logout} variant="outline">
-          Logout
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => router.push('/admin/places/list')} variant="outline">
+            View All Places
+          </Button>
+          <Button onClick={() => router.push('/admin')} variant="outline">
+            Dashboard
+          </Button>
+          <Button onClick={logout} variant="outline">
+            Logout
+          </Button>
+        </div>
       </div>
       <div className="grid gap-6 bg-white p-6 rounded-xl shadow-lg">
         <Input name="name" placeholder="Name (e.g. Agumbe)" value={formData.name} onChange={handleChange} />

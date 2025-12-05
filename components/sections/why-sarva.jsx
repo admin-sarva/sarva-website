@@ -16,8 +16,8 @@ const values = [
   },
   {
     icon: Home,
-    title: "Stay Small, Stay True",
-    desc: "No mega resorts. Just cabins, cottages, and spaces that whisper, not shout."
+    title: "Authenticity by Design",
+    desc: "From intimate cabins to grand retreats, every stay is designed to honour the land, not overpower it."
   },
   {
     icon: Bell,
