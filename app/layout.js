@@ -1,11 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./breeze.css";
-import GustWave from "../components/shared/gustWave"; // Assuming you place it here
-import HamburgerMenu from "../components/shared/hamburgerMenu";
-import { MessageCircle } from 'lucide-react'
-import { FaWhatsapp } from 'react-icons/fa'
-import Link from "next/link";
+import PublicChrome from "../components/shared/public-chrome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,16 +29,7 @@ export default function RootLayout({children} ) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-[#ecfdf5] to-white min-h-screen`}
       >
-        <GustWave />
-        <HamburgerMenu />
-        <Link
-      href="https://wa.me/919632467873" 
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 rounded-full bg-green-500 p-3 shadow-lg hover:bg-green-600 transition-colors"
-    >
-      <FaWhatsapp className="text-white" size={28} />
-    </Link>
+        <PublicChrome />
         <main className="relative z-10">{children}</main>
       </body>
     </html>
