@@ -67,6 +67,16 @@ export default function PlacesListPage() {
         </div>
       </div>
 
+      <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-sm text-emerald-950">
+        <h2 className="mb-3 text-lg font-semibold">Manage places: steps</h2>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Scan the title, slug, hero image, gallery count, and scenic spot count.</li>
+          <li>Use Edit to improve destination copy, photos, and spots.</li>
+          <li>Use Delete only for duplicate or retired destinations.</li>
+          <li>After editing, open the public place page and check the hero, gallery, spots, and linked stays.</li>
+        </ol>
+      </div>
+
       {loading ? (
         <div className="text-center py-8"><Loading /></div>
       ) : (

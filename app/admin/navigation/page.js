@@ -5,154 +5,104 @@ import { Button } from "../../../@/components/ui/button"
 import Link from "next/link"
 import Loading from "../../../components/shared/loading"
 
+const adminPages = [
+  {
+    title: "Dashboard",
+    path: "/admin",
+    category: "Main",
+    purpose: "Start here for the daily workflow and quick links.",
+    steps: ["Open dashboard", "Choose the task", "Follow the page steps", "Verify the public page"],
+  },
+  {
+    title: "Contact Submissions",
+    path: "/admin/contacts",
+    category: "Leads",
+    purpose: "Search, read, and update enquiry statuses.",
+    steps: ["Filter contacts", "View message", "Reply manually", "Mark read, replied, or archived"],
+  },
+  {
+    title: "Wander Notes",
+    path: "/admin/notes",
+    category: "Content",
+    purpose: "Approve visitor-submitted stories.",
+    steps: ["Open pending note", "Preview content", "Check image and summary", "Approve if ready"],
+  },
+  {
+    title: "Add Place",
+    path: "/admin/places",
+    category: "Destinations",
+    purpose: "Create a destination detail page.",
+    steps: ["Add identity", "Upload images", "Add descriptions and spots", "Submit"],
+  },
+  {
+    title: "All Places",
+    path: "/admin/places/list",
+    category: "Destinations",
+    purpose: "Review, edit, and delete destination pages.",
+    steps: ["Find place", "Check image and spot counts", "Edit or delete", "Review public page"],
+  },
+  {
+    title: "Add Stay",
+    path: "/admin/stays",
+    category: "Stays",
+    purpose: "Create an accommodation listing and detail page.",
+    steps: ["Add identity", "Add price and filters", "Upload images", "Submit"],
+  },
+  {
+    title: "All Stays",
+    path: "/admin/stays/list",
+    category: "Stays",
+    purpose: "Review, edit, and delete stay listings.",
+    steps: ["Find stay", "Check price and tags", "Edit or delete", "Review public page"],
+  },
+]
+
 export default function AdminNavigationPage() {
   const { isAuthenticated, loading: authLoading, logout } = useAuth()
 
-  const adminPages = [
-    {
-      title: "Admin Dashboard",
-      description: "Main admin dashboard with overview and quick actions",
-      path: "/admin",
-      icon: "🏠",
-      category: "Main"
-    },
-    {
-      title: "Contact Submissions",
-      description: "View and manage contact form submissions from visitors",
-      path: "/admin/contacts",
-      icon: "📧",
-      category: "Content"
-    },
-    {
-      title: "Wander Notes Management",
-      description: "Review, approve, and manage user-submitted wander notes",
-      path: "/admin/notes",
-      icon: "📝",
-      category: "Content"
-    },
-    {
-      title: "Stays Management",
-      description: "Add, edit, and manage accommodation listings and properties",
-      path: "/admin/stays",
-      icon: "🏡",
-      category: "Content"
-    },
-    {
-      title: "Places Management",
-      description: "Add, edit, and manage destination pages and locations",
-      path: "/admin/places",
-      icon: "🗺️",
-      category: "Content"
-    },
-    {
-      title: "Admin Login",
-      description: "Authentication page for admin access",
-      path: "/admin/login",
-      icon: "🔐",
-      category: "System"
-    }
-  ]
-
   const groupedPages = adminPages.reduce((acc, page) => {
-    if (!acc[page.category]) {
-      acc[page.category] = []
-    }
+    if (!acc[page.category]) acc[page.category] = []
     acc[page.category].push(page)
     return acc
   }, {})
 
-  if (authLoading) return <div className="p-8"><Loading /> </div>
-  if (!isAuthenticated) return null // Will redirect to login
+  if (authLoading) return <div className="p-8"><Loading /></div>
+  if (!isAuthenticated) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#ecfdf5] to-white p-8">
+    <div className="min-h-screen bg-[#f8faf8] p-6 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-emerald-900 mb-2">Admin Navigation</h1>
-            <p className="text-gray-600">Complete list of all admin pages and functions</p>
+            <h1 className="text-3xl font-bold text-emerald-950">All Admin Actions</h1>
+            <p className="mt-2 text-sm text-gray-600">Every admin task, where it lives, and the steps to complete it.</p>
           </div>
           <div className="flex gap-2">
-            <Link href="/admin">
-              <Button variant="outline">Dashboard</Button>
-            </Link>
-            <Button onClick={logout} variant="outline">
-              Logout
-            </Button>
+            <Link href="/admin"><Button variant="outline">Dashboard</Button></Link>
+            <Button onClick={logout} variant="outline">Logout</Button>
           </div>
         </div>
 
         <div className="grid gap-8">
           {Object.entries(groupedPages).map(([category, pages]) => (
-            <div key={category} className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-emerald-800 mb-4 border-b pb-2">
-                {category}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <section key={category} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+              <h2 className="mb-4 border-b pb-2 text-xl font-semibold text-emerald-900">{category}</h2>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {pages.map((page) => (
-                  <Link key={page.path} href={page.path}>
-                    <div className="border border-gray-200 rounded-lg p-4 hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">{page.icon}</span>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors">
-                            {page.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {page.description}
-                          </p>
-                          <p className="text-xs text-emerald-600 mt-2 font-mono">
-                            {page.path}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                  <Link key={page.path} href={page.path} className="rounded-lg border border-gray-200 p-4 transition hover:border-emerald-300 hover:shadow-sm">
+                    <h3 className="font-semibold text-gray-950">{page.title}</h3>
+                    <p className="mt-1 text-sm text-gray-600">{page.purpose}</p>
+                    <p className="mt-2 text-xs font-mono text-emerald-700">{page.path}</p>
+                    <ol className="mt-3 list-decimal space-y-1 pl-5 text-xs text-gray-700">
+                      {page.steps.map((step) => <li key={step}>{step}</li>)}
+                    </ol>
                   </Link>
                 ))}
               </div>
-            </div>
+            </section>
           ))}
-        </div>
-
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-emerald-800 mb-4">Quick Access</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Link href="/admin/contacts">
-              <Button className="w-full" variant="outline">
-                📧 Contacts
-              </Button>
-            </Link>
-            <Link href="/admin/notes">
-              <Button className="w-full" variant="outline">
-                📝 Notes
-              </Button>
-            </Link>
-            <Link href="/admin/stays">
-              <Button className="w-full" variant="outline">
-                🏡 Stays
-              </Button>
-            </Link>
-            <Link href="/admin/places">
-              <Button className="w-full" variant="outline">
-                🗺️ Places
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-8 bg-emerald-50 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-emerald-800 mb-3">Admin Panel Features</h2>
-          <ul className="space-y-2 text-sm text-gray-700">
-            <li>✅ <strong>Contact Management:</strong> View and manage contact form submissions</li>
-            <li>✅ <strong>Wander Notes:</strong> Review and approve user submissions</li>
-            <li>✅ <strong>Stays Management:</strong> Add/edit accommodation listings with image uploads</li>
-            <li>✅ <strong>Places Management:</strong> Create destination pages with rich content</li>
-            <li>✅ <strong>Secure Authentication:</strong> Password-protected access</li>
-            <li>✅ <strong>Session Management:</strong> Automatic logout after 24 hours</li>
-            <li>✅ <strong>Responsive Design:</strong> Works on all devices</li>
-          </ul>
         </div>
       </div>
     </div>
   )
-} 
+}

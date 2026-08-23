@@ -10,7 +10,8 @@ export async function GET(req) {
   
   let query = {}
   if (place) {
-    query.place = place
+    const escapedPlace = place.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    query.place = { $regex: `^${escapedPlace}$`, $options: 'i' }
   }
   
   const stays = await Stay.find(query)

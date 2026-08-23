@@ -12,6 +12,7 @@ export default function AdminContacts() {
   const [statusFilter, setStatusFilter] = useState('all')
   const [pagination, setPagination] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedContact, setSelectedContact] = useState(null)
 
   const fetchContacts = async (page = 1) => {
     try {
@@ -118,6 +119,16 @@ export default function AdminContacts() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Contact Submissions</h1>
+
+      <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-sm text-emerald-950">
+        <h2 className="mb-3 text-lg font-semibold">Manage contacts: steps</h2>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Search by name, email, destination, or message keywords.</li>
+          <li>Filter by status to focus on new, read, replied, or archived enquiries.</li>
+          <li>Click View to read the full message on this page.</li>
+          <li>Reply from your email, phone, or WhatsApp, then update the status here.</li>
+        </ol>
+      </div>
       
       {/* Filters */}
       <div className="flex gap-4 mb-6">
@@ -211,10 +222,7 @@ export default function AdminContacts() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => {
-                            const message = `Name: ${contact.name}\nEmail: ${contact.email}\nDestination: ${contact.destination}\nMembers: ${contact.members}\n\nMessage:\n${contact.message}`
-                            alert(message)
-                          }}
+                          onClick={() => setSelectedContact(contact)}
                         >
                           View
                         </Button>
@@ -227,6 +235,36 @@ export default function AdminContacts() {
           </div>
         )}
       </div>
+
+      {selectedContact && (
+        <div className="mt-6 rounded-lg border border-gray-200 bg-white p-6 shadow">
+          <div className="mb-4 flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-950">{selectedContact.name}</h2>
+              <p className="text-sm text-gray-600">{selectedContact.email}</p>
+            </div>
+            <Button size="sm" variant="outline" onClick={() => setSelectedContact(null)}>Close</Button>
+          </div>
+          <div className="grid gap-3 text-sm md:grid-cols-3">
+            <div>
+              <p className="font-medium text-gray-700">Destination</p>
+              <p className="text-gray-600">{selectedContact.destination}</p>
+            </div>
+            <div>
+              <p className="font-medium text-gray-700">Members</p>
+              <p className="text-gray-600">{selectedContact.members}</p>
+            </div>
+            <div>
+              <p className="font-medium text-gray-700">Received</p>
+              <p className="text-gray-600">{formatDate(selectedContact.createdAt)}</p>
+            </div>
+          </div>
+          <div className="mt-5">
+            <p className="mb-2 font-medium text-gray-700">Message</p>
+            <p className="whitespace-pre-line rounded-md bg-gray-50 p-4 text-sm leading-6 text-gray-700">{selectedContact.message}</p>
+          </div>
+        </div>
+      )}
 
       {/* Pagination */}
       {pagination.pages > 1 && (

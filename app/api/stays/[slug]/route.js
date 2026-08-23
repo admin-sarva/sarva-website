@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server'
 
 export async function GET(req, { params }) {
   await dbConnect()
-  const stay = await Stay.findOne({ slug: params.slug })
+  const { slug } = await params
+  const stay = await Stay.findOne({ slug })
 
   if (!stay) {
     return NextResponse.json({ error: 'Stay not found' }, { status: 404 })
@@ -17,9 +18,10 @@ export async function PUT(req, { params }) {
   await dbConnect()
   
   try {
+    const { slug } = await params
     const body = await req.json()
     const stay = await Stay.findOneAndUpdate(
-      { slug: params.slug },
+      { slug },
       body,
       { new: true, runValidators: true }
     )
@@ -39,7 +41,8 @@ export async function DELETE(req, { params }) {
   await dbConnect()
   
   try {
-    const stay = await Stay.findOneAndDelete({ slug: params.slug })
+    const { slug } = await params
+    const stay = await Stay.findOneAndDelete({ slug })
 
     if (!stay) {
       return NextResponse.json({ error: 'Stay not found' }, { status: 404 })

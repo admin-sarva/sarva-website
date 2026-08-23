@@ -10,7 +10,7 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
-  CarouselNext, 
+  CarouselNext,
 } from '../../../@/components/ui/carousel'
 import ContactNow from '../../../components/shared/contactNow'
 import { Badge } from '../../../@/components/ui/badge'
@@ -20,7 +20,6 @@ export default function StayDetailPage() {
   const { staysSlug } = useParams()
   const [stay, setStay] = useState(null)
   const [notFoundFlag, setNotFoundFlag] = useState(false)
-  const [videoLoaded, setVideoLoaded] = useState(false)
 
   useEffect(() => {
     if (!staysSlug) return
@@ -36,9 +35,15 @@ export default function StayDetailPage() {
   if (notFoundFlag) return notFound()
   if (!stay) return <div className="p-10 text-center"><Loading /></div>
 
+  const images = Array.isArray(stay.images) ? stay.images : []
+  const tags = Array.isArray(stay.tags) ? stay.tags : []
+  const bestFor = Array.isArray(stay.bestFor) ? stay.bestFor : []
+  const descriptions = Array.isArray(stay.description) ? stay.description : []
+  const amenities = Array.isArray(stay.amenities) ? stay.amenities : []
+  const heroImage = stay.heroImage || images[0]
+
   return (
     <main className="bg-gradient-to-b from-[#fefcf8] via-white to-[#f0fdf4] text-gray-700">
-      {/* Hero */}
       <section className="relative h-[60vh] w-full flex items-center justify-center text-white bg-cover bg-center bg-no-repeat">
         {stay.videoUrl ? (
           <video
@@ -47,17 +52,18 @@ export default function StayDetailPage() {
             muted
             loop
             playsInline
-            onLoadedData={() => setVideoLoaded(true)}
           >
             <source src={stay.videoUrl} type="video/mp4" />
           </video>
-        ) : (
+        ) : heroImage ? (
           <Image
-            src={stay.heroImage || stay.images?.[0]}
+            src={heroImage}
             alt={stay.name}
             fill
             className="object-cover"
           />
+        ) : (
+          <div className="absolute inset-0 bg-emerald-950" />
         )}
         <div className="absolute inset-0 bg-[#0d1d14]/60 z-0" />
         <motion.div
@@ -66,53 +72,44 @@ export default function StayDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
         >
-          <h1 className="text-3xl md:text-5xl font-serif tracking-wide mb-4">
-            {stay.name}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-200">{stay.subtitle}</p>
+          <h1 className="text-3xl md:text-5xl font-serif tracking-wide mb-4">{stay.name}</h1>
+          {stay.subtitle && <p className="text-lg md:text-xl text-gray-200">{stay.subtitle}</p>}
         </motion.div>
       </section>
 
-      {/* Overview */}
       <section className="px-6 sm:px-10 py-10 max-w-4xl mx-auto space-y-4">
         <div className="flex flex-wrap gap-2 text-sm">
-          <Badge>{stay.type}</Badge>
-          {stay.tags.map((tag, idx) => (
-            <Badge key={idx} variant="outline">
-              {tag}
-            </Badge>
+          {stay.type && <Badge>{stay.type}</Badge>}
+          {tags.map((tag, idx) => (
+            <Badge key={`${tag}-${idx}`} variant="outline">{tag}</Badge>
           ))}
         </div>
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-500">
-              Rated {stay.rating} ★ — Best for {stay.bestFor.join(', ')}
+              Rated {stay.rating || 'N/A'} star{bestFor.length > 0 ? ` - Best for ${bestFor.join(', ')}` : ''}
             </p>
           </div>
           <ContactNow />
         </div>
       </section>
 
-      {/* Description */}
       <section className="px-6 sm:px-10 pb-10 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
-        {stay.description?.map((para, idx) => (
-          <p key={idx} className="mb-6">
-            {para}
-          </p>
+        {descriptions.map((para, idx) => (
+          <p key={idx} className="mb-6">{para}</p>
         ))}
       </section>
 
-      {/* Gallery */}
-      {stay.images?.length > 0 && (
+      {images.length > 0 && (
         <section className="px-6 sm:px-10 pb-16 max-w-5xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">Gallery</h2>
           <div className="overflow-hidden rounded-xl shadow-md">
             <Carousel className="relative w-full h-[60vh]">
               <CarouselContent>
-                {stay.images.map((img, i) => (
-                  <CarouselItem key={i}>
+                {images.map((img, i) => (
+                  <CarouselItem key={img}>
                     <div className="relative w-full h-[60vh]">
-                      <Image src={img} alt={`Stay image ${i}`} fill className="object-cover" />
+                      <Image src={img} alt={`Stay image ${i + 1}`} fill className="object-cover" />
                     </div>
                   </CarouselItem>
                 ))}
@@ -124,16 +121,12 @@ export default function StayDetailPage() {
         </section>
       )}
 
-      {/* Amenities */}
-      {stay.amenities?.length > 0 && (
+      {amenities.length > 0 && (
         <section className="px-6 sm:px-10 pb-16 max-w-4xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">Amenities</h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-            {stay.amenities.map((item, idx) => (
-              <li
-                key={idx}
-                className="pl-4 relative before:content-['•'] before:absolute before:left-0 text-emerald-800"
-              >
+            {amenities.map((item, idx) => (
+              <li key={`${item}-${idx}`} className="pl-4 relative before:content-['-'] before:absolute before:left-0 text-emerald-800">
                 {item}
               </li>
             ))}
@@ -141,8 +134,7 @@ export default function StayDetailPage() {
         </section>
       )}
 
-      {/* Map */}
-      {/* {stay.mapEmbedUrl && (
+      {stay.mapEmbedUrl && (
         <section className="px-6 sm:px-10 pb-20 max-w-5xl mx-auto">
           <h2 className="text-2xl font-serif text-emerald-900 mb-4">How to Reach</h2>
           <div className="rounded-xl overflow-hidden shadow-lg aspect-video">
@@ -157,7 +149,7 @@ export default function StayDetailPage() {
             />
           </div>
         </section>
-      )} */}
+      )}
 
       <Footer />
     </main>

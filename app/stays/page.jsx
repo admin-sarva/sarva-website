@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import StayCard from '../../components/ui/stay-card'
 import StaysHero from '../../components/sections/stays-hero'
 import Footer from '../../components/sections/footer'
-import { useRouter } from 'next/router'
 import Loading from '../../components/shared/loading'
 
 export default function StaysPage() {
@@ -17,7 +16,6 @@ export default function StaysPage() {
   const [selectedType, setSelectedType] = useState('')
   const [minRating, setMinRating] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
-  const router = useRouter
 
   useEffect(() => {
     setLoading(true)
@@ -56,9 +54,13 @@ export default function StaysPage() {
   }
 
   const filteredStays = stays.filter((stay) => {
+    const descriptionText = Array.isArray(stay?.description)
+      ? stay.description.join(' ')
+      : stay?.description || ''
+
     const matchesSearch =
-      stay?.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      stay?.description?.toLowerCase().includes(searchTerm?.toLowerCase())
+      stay?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      descriptionText.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesPlace = !selectedPlace || stay?.place === selectedPlace
     const matchesType = !selectedType || stay?.type === selectedType
@@ -143,7 +145,7 @@ export default function StaysPage() {
 
           {/* Price */}
           <div>
-            <label className="text-sm font-medium text-gray-600 mb-1 block">Max Price (₹)</label>
+            <label className="text-sm font-medium text-gray-600 mb-1 block">Max Price (Rs.)</label>
             <input
               type="number"
               value={maxPrice}

@@ -7,19 +7,18 @@ import {
   DialogContent,
   DialogTitle,
 } from '../../@/components/ui/dialog'
-// import { Button } from './../@/components/ui/button'
 import { Input } from '../../@/components/ui/input'
 import { Textarea } from '../../@/components/ui/textarea'
 import { Button } from '../../@/components/ui/button'
 
 export default function ContactNow() {
   const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState({ 
-    name: '', 
-    email: '', 
-    message: '', 
-    members: 1, 
-    destination: '' 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+    members: 1,
+    destination: ''
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -46,7 +45,7 @@ export default function ContactNow() {
 
     setLoading(true)
     setErrors({})
-    
+
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -79,7 +78,7 @@ export default function ContactNow() {
 
         {sent ? (
           <div className="text-emerald-600 mt-4">
-            ✅ Your message has been sent!
+            Your message has been sent.
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -87,13 +86,9 @@ export default function ContactNow() {
               <Input
                 placeholder="Your name"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
 
             <div>
@@ -101,26 +96,18 @@ export default function ContactNow() {
                 type="email"
                 placeholder="Your email"
                 value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
 
             <div>
               <Input
-                placeholder="Destination (e.g., Goa, Kerala, Himachal)"
+                placeholder="Destination (e.g., Agumbe, Coorg, Wayanad)"
                 value={formData.destination}
-                onChange={(e) =>
-                  setFormData({ ...formData, destination: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
               />
-              {errors.destination && (
-                <p className="text-red-500 text-sm mt-1">{errors.destination}</p>
-              )}
+              {errors.destination && <p className="text-red-500 text-sm mt-1">{errors.destination}</p>}
             </div>
 
             <div>
@@ -130,13 +117,9 @@ export default function ContactNow() {
                 min="1"
                 max="50"
                 value={formData.members}
-                onChange={(e) =>
-                  setFormData({ ...formData, members: parseInt(e.target.value) || 1 })
-                }
+                onChange={(e) => setFormData({ ...formData, members: parseInt(e.target.value) || 1 })}
               />
-              {errors.members && (
-                <p className="text-red-500 text-sm mt-1">{errors.members}</p>
-              )}
+              {errors.members && <p className="text-red-500 text-sm mt-1">{errors.members}</p>}
             </div>
 
             <div>
@@ -144,19 +127,13 @@ export default function ContactNow() {
                 placeholder="Your message"
                 rows={4}
                 value={formData.message}
-                onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               />
-              {errors.message && (
-                <p className="text-red-500 text-sm mt-1">{errors.message}</p>
-              )}
+              {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
             </div>
 
-            {errors.submit && (
-              <p className="text-red-500 text-sm mt-1">{errors.submit}</p>
-            )}
-            
+            {errors.submit && <p className="text-red-500 text-sm mt-1">{errors.submit}</p>}
+
             <Button type="submit" disabled={loading}>
               {loading ? 'Sending...' : 'Send Message'}
             </Button>

@@ -1,41 +1,55 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react"
+
+function createGust() {
+  return {
+    id: `${Date.now()}-${Math.random()}`,
+    top: `${Math.random() * 60}%`,
+    height: `${Math.random() * 50 + 50}%`,
+    transform: `translateY(${Math.random() * 30 - 15}px)`,
+    opacity: Math.random() * 0.3 + 0.4,
+  }
+}
 
 export default function GustWave() {
-  const [gusts, setGusts] = useState([]);
+  const [gusts, setGusts] = useState([])
+  const timeoutRef = useRef(null)
 
   useEffect(() => {
     const triggerGust = () => {
-      const id = Date.now();
-      setGusts((prev) => [...prev, id]);
+      const gust = createGust()
+      setGusts((prev) => [...prev, gust])
 
       setTimeout(() => {
-        setGusts((prev) => prev.filter((g) => g !== id));
-      }, 5000); // gust lasts 5s
+        setGusts((prev) => prev.filter((item) => item.id !== gust.id))
+      }, 5000)
 
-      const nextDelay = Math.random() * 4000 + 4000;
-      setTimeout(triggerGust, nextDelay);
-    };
+      timeoutRef.current = setTimeout(triggerGust, Math.random() * 4000 + 4000)
+    }
 
-    triggerGust();
-  }, []);
+    triggerGust()
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
 
   return (
     <>
-      {gusts.map((id) => (
+      {gusts.map((gust) => (
         <div
-          key={id}
+          key={gust.id}
           className="breeze-gust"
           style={{
-            top: `${Math.random() * 60}%`,
-            height: `${Math.random() * 50 + 50}%`, // thicker: 50–100% of screen
+            top: gust.top,
+            height: gust.height,
             animation: "gustWave 5s ease-in-out forwards",
-            transform: `translateY(${Math.random() * 30 - 15}px)`,
-            opacity: Math.random() * 0.3 + 0.4, // stronger base opacity
+            transform: gust.transform,
+            opacity: gust.opacity,
           }}
         />
       ))}
     </>
-  );
+  )
 }

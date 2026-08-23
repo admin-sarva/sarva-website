@@ -47,6 +47,15 @@ export default function AdminNotesPage() {
           Logout
         </Button>
       </div>
+      <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-sm text-emerald-950">
+        <h2 className="mb-3 text-lg font-semibold">Review wander notes: steps</h2>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Open Preview to read the full submission before approving.</li>
+          <li>Check that the title, summary, place, image, and story are complete.</li>
+          <li>Approve only polished notes that fit the Sarva travel tone.</li>
+          <li>Leave weak, duplicate, or incomplete notes pending until they can be edited or removed.</li>
+        </ol>
+      </div>
       <div className="grid gap-6">
         {notes.map(note => (
           <div key={note._id} className="bg-white rounded-lg shadow p-4">

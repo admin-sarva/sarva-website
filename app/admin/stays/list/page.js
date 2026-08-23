@@ -66,6 +66,16 @@ export default function StaysListPage() {
         </div>
       </div>
 
+      <div className="mb-6 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-sm text-emerald-950">
+        <h2 className="mb-3 text-lg font-semibold">Manage stays: steps</h2>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Scan the stay name, slug, place, price, rating, and tags.</li>
+          <li>Use Edit to update copy, filters, amenities, and images.</li>
+          <li>Use Delete only for duplicate or retired stays.</li>
+          <li>After editing, open the public stay page and check the hero, gallery, and contact CTA.</li>
+        </ol>
+      </div>
+
       {loading ? (
         <div className="text-center py-8"><Loading /></div>
       ) : (

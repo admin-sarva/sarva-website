@@ -5,7 +5,15 @@ import Note from '../../models/note'
 export async function GET(req) {
   await dbConnect()
   const url = new URL(req.url)
+  const slug = url.searchParams.get('slug')
   const status = url.searchParams.get('status') || 'approved'
+
+  if (slug) {
+    const note = await Note.findOne({ slug, status })
+    if (!note) return NextResponse.json({ error: 'Note not found' }, { status: 404 })
+    return NextResponse.json(note)
+  }
+
   const notes = await Note.find({ status })
   return NextResponse.json(notes)
 }

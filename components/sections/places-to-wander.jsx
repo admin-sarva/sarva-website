@@ -29,24 +29,16 @@ export default function PlacesToWander() {
   }, [])
 
   const getValidImageSrc = (place) => {
-    if (place.heroImage && (place.heroImage.startsWith('/') || place.heroImage.startsWith('http'))) {
-      return place.heroImage
-    }
-    if (place.image && (place.image.startsWith('/') || place.image.startsWith('http'))) {
-      return place.image
-    }
-    if (place.images && place.images.length > 0 && (place.images[0].startsWith('/') || place.images[0].startsWith('http'))) {
-      return place.images[0]
-    }
+    if (place.heroImage && (place.heroImage.startsWith('/') || place.heroImage.startsWith('http'))) return place.heroImage
+    if (place.image && (place.image.startsWith('/') || place.image.startsWith('http'))) return place.image
+    if (place.images?.[0] && (place.images[0].startsWith('/') || place.images[0].startsWith('http'))) return place.images[0]
     return null
   }
 
   if (loading) {
     return (
       <section className="py-20 px-6 md:px-12 bg-cover bg-no-repeat bg-center">
-        <div className="text-center">
-          <p className="text-gray-600"> <Loading /> </p>
-        </div>
+        <div className="text-center"><p className="text-gray-600"><Loading /></p></div>
       </section>
     )
   }
@@ -54,25 +46,22 @@ export default function PlacesToWander() {
   if (error) {
     return (
       <section className="py-20 px-6 md:px-12 bg-cover bg-no-repeat bg-center">
-        <div className="text-center">
-          <p className="text-red-500">Error loading places: {error}</p>
-        </div>
+        <div className="text-center"><p className="text-red-500">Error loading places: {error}</p></div>
       </section>
     )
   }
 
   return (
-    <section className="py-20 px-6 md:px-12  bg-cover bg-no-repeat bg-center">
+    <section className="py-20 px-6 md:px-12 bg-cover bg-no-repeat bg-center">
       <div className="text-center mb-14 max-w-4xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-serif text-emerald-900">
           Where would you like to wander?
         </h2>
         <p className="mt-3 text-gray-700 text-base md:text-lg">
-          From monsoon-kissed hills to coastlines that hum at sunset — your story begins here.
+          From monsoon-kissed hills to coastlines that hum at sunset, your story begins here.
         </p>
       </div>
 
-      {/* Desktop grid view */}
       <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {places.map((place, idx) => {
           const src = getValidImageSrc(place)
@@ -88,12 +77,7 @@ export default function PlacesToWander() {
             >
               <div className="relative w-full h-56">
                 {src ? (
-                  <Image
-                    src={src}
-                    alt={place.name}
-                    fill
-                    className="object-cover group-hover:brightness-90 transition duration-500"
-                  />
+                  <Image src={src} alt={place.name} fill className="object-cover group-hover:brightness-90 transition duration-500" />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                     <span className="text-gray-400">No image available</span>
@@ -110,7 +94,6 @@ export default function PlacesToWander() {
         })}
       </div>
 
-      {/* Mobile horizontal scroll view */}
       <div id="places-scroll" className="md:hidden flex gap-5 overflow-x-auto snap-x snap-mandatory pt-2 pb-4 max-w-6xl mx-auto">
         {places.map((place, idx) => {
           const src = getValidImageSrc(place)
@@ -126,12 +109,7 @@ export default function PlacesToWander() {
             >
               <div className="relative h-56 w-full">
                 {src ? (
-                  <Image
-                    src={src}
-                    alt={place.name}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={src} alt={place.name} fill className="object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                     <span className="text-gray-400">No image available</span>

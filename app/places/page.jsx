@@ -30,12 +30,8 @@ export default function PlacesPage() {
   }, [])
 
   const getValidImageSrc = (place) => {
-    if (place?.heroImage && (place.heroImage.startsWith('/') || place.heroImage.startsWith('http'))) {
-      return place.heroImage
-    }
-    if (place?.images && place.images.length > 0 && (place.images[0].startsWith('/') || place.images[0].startsWith('http'))) {
-      return place.images[0]
-    }
+    if (place?.heroImage && (place.heroImage.startsWith('/') || place.heroImage.startsWith('http'))) return place.heroImage
+    if (place?.images?.[0] && (place.images[0].startsWith('/') || place.images[0].startsWith('http'))) return place.images[0]
     return null
   }
 
@@ -53,19 +49,23 @@ export default function PlacesPage() {
             All the Places You Can Wander
           </h1>
           <p className="text-gray-700 text-base md:text-lg">
-            Let your journey begin where the rain falls soft and the trees still speak.  
+            Let your journey begin where the rain falls soft and the trees still speak.
             Choose your rhythm and we'll show you where to pause.
           </p>
         </motion.div>
 
         {loading ? (
-          <div className="text-center py-10 text-lg text-gray-500"> <Loading /> </div>
+          <div className="text-center py-10 text-lg text-gray-500"><Loading /></div>
         ) : error ? (
           <div className="text-center py-10 text-red-500">{error}</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto">
             {places.map((place, idx) => {
               const src = getValidImageSrc(place)
+              const description = Array.isArray(place.description)
+                ? place.description[0]
+                : place.description || "A place where mist lingers, waterfalls whisper, and nature reclaims time. Ideal for those who want to pause and mean it."
+
               return (
                 <motion.div
                   key={place.slug}
@@ -75,15 +75,9 @@ export default function PlacesPage() {
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  {/* Image */}
                   <div className="relative w-full md:w-1/2 h-64 md:h-auto">
                     {src ? (
-                      <Image
-                        src={src}
-                        alt={place.name}
-                        fill
-                        className="object-cover"
-                      />
+                      <Image src={src} alt={place.name} fill className="object-cover" />
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                         <span className="text-gray-400 text-sm">No image available</span>
@@ -91,23 +85,18 @@ export default function PlacesPage() {
                     )}
                   </div>
 
-                  {/* Text content */}
                   <div className="p-6 md:p-8 flex flex-col justify-between w-full md:w-1/2">
                     <div>
-                      <h3 className="text-2xl font-serif text-emerald-900 mb-2">
-                        {place.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 italic mb-4">{place.caption}</p>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {Array.isArray(place.description) ? place.description[0] : place.description || "A place where mist lingers, waterfalls whisper, and nature reclaims time. Ideal for those who want to pause  - and mean it."}
-                      </p>
+                      <h3 className="text-2xl font-serif text-emerald-900 mb-2">{place.name}</h3>
+                      {place.caption && <p className="text-sm text-gray-600 italic mb-4">{place.caption}</p>}
+                      <p className="text-sm text-gray-700 leading-relaxed">{description}</p>
                     </div>
 
                     <Link
                       href={`/places/${place.slug}`}
                       className="mt-6 inline-block bg-emerald-700 text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-emerald-800 transition w-max"
                     >
-                      Wander Here →
+                      Wander Here
                     </Link>
                   </div>
                 </motion.div>
@@ -115,7 +104,7 @@ export default function PlacesPage() {
             })}
           </div>
         )}
-        <div className="mt-12">  <Footer /></div>
+        <div className="mt-12"><Footer /></div>
       </main>
     </>
   )

@@ -5,13 +5,12 @@ import { useRouter } from "next/navigation"
 export default function StayCard({ stay }) {
   const router = useRouter()
 
-  // Helper function to pick a valid image
-  const getValidImageSrc = (stay) => {
-    if (stay?.images && stay.images.length > 0 && (stay.images[0].startsWith('/') || stay.images[0].startsWith('http'))) {
-      return stay.images[0]
+  const getValidImageSrc = (stayData) => {
+    if (stayData?.images?.[0] && (stayData.images[0].startsWith('/') || stayData.images[0].startsWith('http'))) {
+      return stayData.images[0]
     }
-    if (stay?.heroImage && (stay.heroImage.startsWith('/') || stay.heroImage.startsWith('http'))) {
-      return stay.heroImage
+    if (stayData?.heroImage && (stayData.heroImage.startsWith('/') || stayData.heroImage.startsWith('http'))) {
+      return stayData.heroImage
     }
     return null
   }
@@ -55,9 +54,9 @@ export default function StayCard({ stay }) {
           <Link
             href={`/stays/${stay?.slug}`}
             className="text-sm font-medium text-emerald-700 hover:underline w-max"
-            onClick={(e) => e.stopPropagation()} // prevent outer div click
+            onClick={(e) => e.stopPropagation()}
           >
-            View Stay →
+            View Stay
           </Link>
         </div>
       </div>
